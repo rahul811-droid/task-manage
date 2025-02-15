@@ -13,4 +13,4 @@ import mongoose from "mongoose";
   }
 };
 
-export default  connectDb
+export default connectDb ;

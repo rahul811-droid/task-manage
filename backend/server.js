@@ -1,6 +1,8 @@
 import express from 'express';
-import connectDb from './src/config/mongoDb.js';
+// import connectDb from './src/config/mongoDb.js';
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+
 import cors from 'cors';
 import path from 'path';
 import {createServer } from 'node:http';
@@ -23,6 +25,12 @@ app.use('/api/v1/auth',authRouter);
 app.use('/api/v1/task',taskRouter);
 
 
+mongoose.connect(process.env.MONGO_URI).then(() => {
+    console.log('Connected to MongoDB!');
+}).catch((err) => {
+    console.log(err);
+});
+
 app.use(express.static(path.join(__dirname, '/frontend/dist')));
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
@@ -41,7 +49,7 @@ startWebSockets(io);
 
 server.listen(port, () => {    
     console.log(`Server is running on port ${port}`);
-    connectDb();
+    // connectDb();
 });
 
 
