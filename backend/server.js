@@ -32,11 +32,14 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
 });
 
 
-app.use(cors({
-    origin: [process.env.FRONTEND_URL],
-    method: ["GET", "POST", "DELETE", "PUT"],
-    credentials: true, // If you need to include credentials (cookies, authorization headers, etc.)
-}));
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.header("Access-Control-Allow-Credentials", "true");
+    next();
+});
+
 
 
 app.use(express.static(path.join(__dirname, '/frontend/dist')));
