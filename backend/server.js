@@ -31,10 +31,21 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
     console.log(err);
 });
 
+
+app.use(cors({
+    origin: [process.env.FRONTEND_URL],
+    method: ["GET", "POST", "DELETE", "PUT"],
+    credentials: true, // If you need to include credentials (cookies, authorization headers, etc.)
+}));
+
+
 app.use(express.static(path.join(__dirname, '/frontend/dist')));
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
   });
+
+
+
 
 const io = new Server(server, {
     cors: {
